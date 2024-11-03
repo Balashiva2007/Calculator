@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Calculator Model</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #ffffff;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        .calculator {
+            width: 320px;
+            background-color: #141835;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+        }
+        .display {
+            width: 100%;
+            height: 70px;
+            background-color: #222;
+            color: #fff;
+            font-size: 2.5em;
+            text-align: right;
+            padding: 10px;
+            border: solid;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.5);
+        }
+        .buttons {
+            display: grid;  
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+        }
+        button {
+            height: 70px;
+            background-color: #f0f0f5;
+            color: #0077ee;
+            font-size: 1.5em;
+            border: none;
+            border-radius: 50%; /* Circular buttons */
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.1s;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        button:hover {
+            background-color: #e0e0e5;
+        }
+        button:active {
+            transform: translateY(2px);
+        }
+        button.equal {
+            background-color: #ff8c00;
+            color: #fff;
+            grid-column: span ;
+            border-radius: 50%; /* Make equal button circular */
+        }
+        button.equal:hover {
+            background-color: #ffa500;
+        }
+        button.special {
+            background-color: #d0d0d5;
+        }
+        button.special:hover {
+            background-color: #c0c0c5;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+        <h2 class="color-red bold">Balashiva</h2>
+        <input type="text" class="display" id="display" disabled />
+        <div class="buttons">
+            <button onclick="clearDisplay()">C</button>
+            <button onclick="deleteLast()">DEL</button>
+            <button onclick="appendOperator('/')">/</button>
+            <button onclick="appendOperator('*')">*</button>
+
+            <button onclick="appendNumber('7')">7</button>
+            <button onclick="appendNumber('8')">8</button>
+            <button onclick="appendNumber('9')">9</button>
+            <button onclick="appendOperator('-')">-</button>
+
+            <button onclick="appendNumber('4')">4</button>
+            <button onclick="appendNumber('5')">5</button>
+            <button onclick="appendNumber('6')">6</button>
+            <button onclick="appendOperator('+')">+</button>
+
+            <button onclick="appendNumber('1')">1</button>
+            <button onclick="appendNumber('2')">2</button>
+            <button onclick="appendNumber('3')">3</button>
+            <button onclick="calculateResult()" class="equal">=</button>
+
+            <button onclick="appendNumber('0')">0</button>
+            <button onclick="appendNumber('.')">.</button>
+            <button class="special" onclick="calculateSquareRoot()">√</button>
+            <button class="special" onclick="appendOperator('**')">x<sup>y</sup></button>
+
+            <button class="special" onclick="appendFunction('Math.sin(')">sin</button>
+            <button class="special" onclick="appendFunction('Math.cos(')">cos</button>
+            <button class="special" onclick="appendFunction('Math.tan(')">tan</button>
+            <button class="special" onclick="appendFunction('Math.PI)">π</button>
+        </div>
+    </div>
+    <script>
+        const display = document.getElementById("display");
+
+        function appendNumber(number) {
+            display.value += number;
+        }
+
+        function appendOperator(operator) {
+            const lastChar = display.value.slice(-1);
+            if (display.value !== "" && !isNaN(lastChar)) {
+                display.value += operator;
+            }
+        }
+
+        function appendFunction(func) {
+            display.value += func;
+        }
+
+        function calculateSquareRoot() {
+            display.value += 'Math.sqrt(';
+        }
+
+        function clearDisplay() {
+            display.value = "";
+        }
+
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        function calculateResult() {
+            try {
+                // Evaluate the expression and handle square roots and powers correctly
+                display.value = eval(display.value.replace(/Math\.sqrt/g, "Math.sqrt"));
+            } catch (error) {
+                display.value = "Error";
+            }
+        }
+    </script>
+</body>
+</html>
+
